@@ -9,6 +9,7 @@ import me.yamakaja.commanditems.parser.ConfigManager;
 import me.yamakaja.commanditems.util.CommandItemsI18N;
 import me.yamakaja.commanditems.util.EnchantmentGlow;
 import org.bstats.bukkit.Metrics;
+import org.bukkit.NamespacedKey;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.stream.Collectors;
@@ -22,11 +23,14 @@ public class CommandItems extends JavaPlugin {
     private BukkitCommandManager commandManager;
     private ItemExecutor executor;
     private CommandItemManager commandItemManager;
+    private EnchantmentGlow glowEnchantment;
 
     @Override
     public void onEnable() {
         new Metrics(this);
 
+        NamespacedKey glowKey = new NamespacedKey(this, "glow");
+        this.glowEnchantment = new EnchantmentGlow(glowKey);
         boolean debug = System.getProperty("me.yamakaja.debug") != null;
         this.saveResource("config.yml", debug);
         this.saveResource("messages.yml", debug);
@@ -67,7 +71,6 @@ public class CommandItems extends JavaPlugin {
         this.executor = new ItemExecutor(this);
         this.commandItemManager = new CommandItemManager(this);
 
-        EnchantmentGlow.getGlow();
     }
 
     public ConfigManager getConfigManager() {
@@ -82,4 +85,8 @@ public class CommandItems extends JavaPlugin {
         return commandItemManager;
     }
 
+
+    public EnchantmentGlow getGlowEnchantment() {
+        return glowEnchantment;
+    }
 }

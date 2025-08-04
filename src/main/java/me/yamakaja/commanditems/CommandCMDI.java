@@ -62,7 +62,7 @@ public class CommandCMDI extends BaseCommand {
             paramMap.put(split[0], split[1]);
         }
 
-        ItemStack item = definition.getItem(paramMap);
+        ItemStack item = definition.getItem(paramMap, plugin.getGlowEnchantment());
 
         item.setAmount(amount);
         Map<Integer, ItemStack> leftovers = player.player.getInventory().addItem(item);

@@ -1,41 +1,23 @@
 package me.yamakaja.commanditems.util;
 
+import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.enchantments.EnchantmentTarget;
 import org.bukkit.enchantments.EnchantmentWrapper;
 import org.bukkit.inventory.ItemStack;
 
-import java.lang.reflect.Field;
-
 public class EnchantmentGlow extends EnchantmentWrapper {
 
-    private static Enchantment glow;
+    private final NamespacedKey key;
 
-    public EnchantmentGlow() {
-        super("enchantment_glow");
+    public EnchantmentGlow(NamespacedKey key) {
+        super();
+        this.key = key;
     }
 
-    public static Enchantment getGlow() {
-        if (glow != null)
-            return glow;
-        else if ((glow = Enchantment.getByName("Glow")) != null)
-            return glow;
-
-        try {
-            Field f = Enchantment.class.getDeclaredField("acceptingNew");
-            f.setAccessible(true);
-            f.set(null, true);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        glow = new EnchantmentGlow();
-        Enchantment.registerEnchantment(glow);
-        return glow;
-    }
-
-    public static void addGlow(ItemStack item) {
-        item.addEnchantment(getGlow(), 1);
+    @Override
+    public NamespacedKey getKey() {
+        return key;
     }
 
     @Override
@@ -55,7 +37,7 @@ public class EnchantmentGlow extends EnchantmentWrapper {
 
     @Override
     public int getMaxLevel() {
-        return 10;
+        return 1;
     }
 
     @Override
@@ -66,5 +48,35 @@ public class EnchantmentGlow extends EnchantmentWrapper {
     @Override
     public int getStartLevel() {
         return 1;
+    }
+
+    @Override
+    public boolean isTreasure() {
+        return false;
+    }
+
+    @Override
+    public boolean isCursed() {
+        return false;
+    }
+
+    @Override
+    public String getTranslationKey() {
+        return "enchantment.glow";
+    }
+
+    @Override
+    public boolean isRegistered() {
+        return true;
+    }
+
+    @Override
+    public NamespacedKey getKeyOrNull() {
+        return key;
+    }
+
+    @Override
+    public NamespacedKey getKeyOrThrow() {
+        return key;
     }
 }

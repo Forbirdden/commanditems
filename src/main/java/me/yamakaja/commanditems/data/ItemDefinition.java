@@ -46,7 +46,8 @@ public class ItemDefinition {
         @JsonProperty(defaultValue = "")
         private String skullUser;
 
-        public ItemStack build(String key, Map<String, String> params) {
+        // Add a parameter for the plugin or the glow enchantment instance
+        public ItemStack build(String key, Map<String, String> params, EnchantmentGlow glowEnchantment) {
             Preconditions.checkNotNull(this.type, "No material specified!");
 
             ItemStack stack = new ItemStack(this.type, 1, (short) this.damage);
@@ -84,8 +85,8 @@ public class ItemDefinition {
 
             stack.setItemMeta(meta);
 
-            if (glow)
-                stack.addEnchantment(EnchantmentGlow.getGlow(), 1);
+            if (glowEnchantment != null && glow)
+                stack.addEnchantment(glowEnchantment, 1);
 
             return stack;
         }
@@ -138,8 +139,8 @@ public class ItemDefinition {
         return this.cooldown;
     }
 
-    public ItemStack getItem(Map<String, String> params) {
-        return this.item.build(this.key, params);
+    public ItemStack getItem(Map<String, String> params, EnchantmentGlow glowEnchantment) {
+        return item.build(this.key, params, glowEnchantment);
     }
 
     public Action[] getActions() {

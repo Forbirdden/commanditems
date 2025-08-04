@@ -155,11 +155,6 @@ public class InterpretationContext {
         return new InterpretationContext(this);
     }
 
-    @Override
-    protected void finalize() {
-        release();
-    }
-
     public void release() {
         for (InterpretationStackFrame frame : this.interpretationStack) {
             frame.reset();

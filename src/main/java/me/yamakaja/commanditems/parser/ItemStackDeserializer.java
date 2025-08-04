@@ -18,8 +18,14 @@ import java.util.List;
 
 public class ItemStackDeserializer extends StdDeserializer<ItemStack> {
 
+    private EnchantmentGlow glowEnchantment;
+
     protected ItemStackDeserializer() {
         super(ItemStack.class);
+    }
+
+    public void setGlowEnchantment(EnchantmentGlow glowEnchantment) {
+        this.glowEnchantment = glowEnchantment;
     }
 
     @Override
@@ -85,8 +91,8 @@ public class ItemStackDeserializer extends StdDeserializer<ItemStack> {
 
         stack.setItemMeta(meta);
 
-        if (glow)
-            stack.addEnchantment(EnchantmentGlow.getGlow(), 1);
+        if (glow && glowEnchantment != null)
+            stack.addEnchantment(glowEnchantment, 1);
 
         return stack;
     }
