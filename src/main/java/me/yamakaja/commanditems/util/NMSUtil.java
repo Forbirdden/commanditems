@@ -87,9 +87,28 @@ public class NMSUtil {
         }
     }
 
-    public static String getNMSVersion() {
-        return Bukkit.getServer().getClass().getPackage().getName().split(Pattern.quote("."))[3];
+public static String getNMSVersion() {
+    String packageName = Bukkit.getServer().getClass().getPackage().getName();
+    String[] parts = packageName.split(Pattern.quote("."));
+    
+    if (parts.length >= 4) {
+        return parts[3]; 
+    } else {
+        try {
+            Class<?> serverClass = Bukkit.getServer().getClass();
+            Method getVersionMethod = serverClass.getMethod("getVersion");
+            String version = (String) getVersionMethod.invoke(Bukkit.getServer());
+            
+            String[] versionParts = version.split("\\.");
+            if (versionParts.length >= 2) {
+                return "v" + versionParts[0] + "_" + versionParts[1] + "_R1";
+            }
+            return "v1_21_R1";
+        } catch (Exception e) {
+            return "v1_21_R1"; 
+        }
     }
+}
 
     private static Object getCMDITag(ItemMeta meta, boolean create) throws IllegalAccessException, InstantiationException {
         Map<String, Object> unhandledTags = (Map<String, Object>) unhandledTagsField.get(meta);
